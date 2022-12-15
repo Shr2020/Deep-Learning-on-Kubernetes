@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mnist-train
+  labels:
+    app: mnist-app
+spec:
+  automountServiceAccountToken: false
+  containers:
+    - name: mnist-train-container
+      image: <docker image>
+      ports:
+        - containerPort: 10000
+      volumeMounts:
+        - name: my-volume
+          mountPath: /mnist/vol
+  volumes:
+    - name: my-volume
+      persistentVolumeClaim:
+        claimName: mypvc
+  restartPolicy: Never

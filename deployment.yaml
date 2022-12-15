@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inference
+  labels:
+    app: mnist-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mnist-app
+  template:
+    metadata:
+      labels:
+        app: mnist-app
+    spec:
+      containers:
+      - image: <docker image>
+        name: inference-container
+        ports:
+         - containerPort: 9000
+        volumeMounts:
+        - name: my-volume
+          mountPath: /mnist/vol
+      volumes:
+      - name: my-volume
+        persistentVolumeClaim:
+         claimName: mypvc

@@ -1,0 +1,44 @@
+# Start with a Linux container
+
+FROM ubuntu:20.04
+
+# Install just the Python runtime (no dev)
+RUN apt-get update && apt-get install -y\
+    python3 python3-dev gcc \
+    gfortran musl-dev \
+    python3-pip \
+    python3-pycurl \
+    curl \
+    python3-numpy \
+    libx11-6 \
+        && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --upgrade pip
+
+# Set up a working folder and install the pre-reqs
+RUN mkdir /mnist
+WORKDIR /mnist
+RUN mkdir /mnist/vol
+RUN mkdir /mnist/images
+RUN mkdir /mnist/templates
+
+RUN pip install torch===1.4.0+cpu torchvision===0.1.6 -f \
+  https://download.pytorch.org/whl/torch_stable.html
+
+
+ADD ./req.txt /mnist
+RUN pip install -r req.txt
+
+# No CUDA-specific steps
+ENV USE_CUDA=0
+
+# Add the code as the last Docker layer because it changes the most
+ADD ./train.py  /mnist/train.py
+ADD ./inference.py  /mnist/inference.py
+ADD ./templates/front.html /mnist/templates/front.html
+ADD ./templates/backend.html /mnist/templates/backend.html
+RUN cd /mnist
+
+EXPOSE 9000
+# Run the service
+CMD ["python3", "inference.py"]

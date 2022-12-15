@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mnist
+spec:
+  type: LoadBalancer
+  selector:
+    app: mnist-app
+  ports:
+  - protocol: TCP
+    port: 9000
+    targetPort: 9000
