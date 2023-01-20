@@ -3,7 +3,7 @@ Develop Container and Kubernetes artefacts perform DL training and DL inference 
 IBM Kubernetes cluster.
 
 ### Steps Environment Setup:
-1. Create the VPC (followed the instructions in initial lectures)
+1. Create the VPC on IBM Cloud
 2. Create the k8 cluster
 3. On the local VM, install all the necessary packages to run IBM cloud CLI, kubectl and
 minikube (to test locally). I have used the vagrant VM (that was used for the Kubernetes
